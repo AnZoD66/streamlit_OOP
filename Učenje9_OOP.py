@@ -1,0 +1,984 @@
+import streamlit as st
+
+st.title("OOP (Object-Orianted Programming) learning guide")
+
+st.set_page_config(layout="centered")
+
+st.markdown("""<style>
+body {background-color: #0b0f19;}
+.chapter-label {color: #facc15; letter-spacing: 3px; font-weight: 700; font-size: 13px;}
+.chapter-title {font-size: 46px; font-weight: 800; margin-bottom: 5px;}
+.chapter-subtitle {color: #94a3b8; font-style: italic; font-size: 18px; margin-bottom: 30px;}
+.section-title {color: #60a5fa; font-size: 26px; margin-top: 35px; margin-bottom: 10px;}
+.tip-box {background-color: #0f2a24; border-left: 4px solid #34d399; padding: 15px; border-radius: 6px; margin-top: 20px;}
+</style>""", unsafe_allow_html=True)
+
+
+if "chapter" not in st.session_state:
+    st.session_state.chapter = 1
+    st.session_state.answered = False
+if "correct" not in st.session_state:
+    st.session_state.correct = False
+if "selected" not in st.session_state:
+    st.session_state.selected = None
+
+def chapter(number, title, subtitle):
+    st.markdown(f"""<div class="chapter-label">CHAPTER {number}</div> <div class="chapter-title">{title}</div> <div class="chapter-subtitle">{subtitle}</div> """, unsafe_allow_html=True)
+
+if st.session_state.chapter == 1:
+    chapter(
+        1,
+        "What is OOP?",
+        "The big idea behind Object-Oriented Programming")
+
+    st.markdown("""
+                Imagine you're building a game. You need to track 50 different characters, each with a name, health,
+                and attack power. Without OOP, you'd write **hundreds of variables** and functions tangled together.
+
+                OOP lets you describe a *template* for a character once, then create as many as you want.
+
+                OOP is a way of structuring your code around **objects** — bundles that hold both *data* (attributes)
+                and *behaviour* (methods) in one place.""")
+
+    st.markdown('<div class="section-title">The 4 Pillars of OOP</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+                - **Encapsulation** — bundling data and methods, hiding internal details  
+                - **Inheritance** — a class can inherit features from another class  
+                - **Polymorphism** — different objects can respond to the same method differently  
+                - **Abstraction** — hiding complexity, showing only what's necessary""")
+
+    st.markdown("""<div class="tip-box">
+                💡 You don't need to memorise these now. By the end of this course you'll understand them through hands-on examples.
+                </div>""", unsafe_allow_html=True)
+
+
+    code1 = """
+    # Even a number is an object!
+    x = 42
+    print(type(x))       # <class 'int'>
+    print(x.bit_length()) # 6  — a method on an int!"""
+
+    st.code(code1, language="python")
+
+    st.markdown("### 🧠 Quick Check")
+    st.markdown("**What is an object in OOP?**")
+
+    options = [
+        "Only a variable that stores numbers",
+        "A bundle of data (attributes) and behaviour (methods)",
+        "A type of loop in Python",
+        "A file on your computer"]
+
+    correct_answer = options[1]
+
+    for option in options:
+        if st.button(option, use_container_width=True, key=f"ch1{option}"):
+            st.session_state.selected = option
+            st.session_state.answered = True
+            if option == correct_answer:
+                st.session_state.correct = True
+            else:
+                st.session_state.correct = False
+    if st.session_state.answered:
+        if st.session_state.correct:
+            st.success("✅ Exactly! An object combines both data and behaviour in one unit.")
+            if st.button("Next", key="ch1_next"):
+                st.session_state.chapter = 2
+                st.session_state.answered = False
+                st.session_state.correct = False
+                st.session_state.selected = None
+        else:
+            st.error("❌ Not quite right! Try again.")
+
+if st.session_state.chapter == 2:
+    chapter(2,
+    "Classes & Objects",
+    "Blueprint vs. the thing itself")
+
+    st.markdown("""A class is the blueprint. An object is what you build from it. Think of a class as a cookie cutter, and objects as the cookies.""")
+
+    code2 = """
+    class Dog:
+    pass  # empty class for now
+
+    # Creating objects (instances)
+    my_dog = Dog()
+    your_dog = Dog()
+
+    print(type(my_dog))  # <class '__main__.Dog'>"""
+
+    st.code(code2, language="python")
+
+    st.markdown(" Each object is **independent**. Changing one doesn't affect the other.")
+
+    st.markdown("""<div class="section-title">The __init__ method</div>""", unsafe_allow_html=True)
+
+    st.markdown(" __init__ is a special method called automatically when you create an object. It's where you set up initial attributes.")
+
+    code3 = """
+    class Dog:
+        def __init__(self, name, breed):
+            self.name = name     # instance attribute
+            self.breed = breed
+
+    buddy = Dog("Buddy", "Labrador")
+    rex   = Dog("Rex",   "German Shepherd")
+
+    print(buddy.name)   # Buddy
+    print(rex.breed)    # German Shepherd"""
+
+    st.code(code3, language="python")
+
+    st.markdown("""<div class="tip-box">
+                💡 What is self? It's a reference to the specific object being created or used. When you call buddy.name, Python automatically passes buddy as self behind the scenes. You must always put self as the first parameter in any instance method. </div>""", unsafe_allow_html=True)
+
+    st.markdown("### 🧠 Quick Check")
+    st.markdown("**What does __init__ do??**")
+
+    options = [
+        "It deletes an object from memory",
+        "It's called automatically when creating an object, to set up its initial state",
+        "It's a required function you must call manually before using a class",
+        "It defines the class name"]
+
+    correct_answer = options[1]
+
+    for option in options:
+        if st.button(option, use_container_width=True, key=f"ch2{option}"):
+            st.session_state.selected = option
+            st.session_state.answered = True
+            if option == correct_answer:
+                st.session_state.correct = True
+            else:
+                st.session_state.correct = False
+    if st.session_state.answered:
+        if st.session_state.correct:
+            st.success("✅ Correct! __init__ is the initialiser — Python calls it for you when you do Dog().")
+            if st.button("Next", key="ch2_next"):
+                st.session_state.chapter = 3
+                st.session_state.answered = False
+                st.session_state.correct = False
+                st.session_state.selected = None
+        else:
+            st.error("❌ Not quite right! Try again..")
+
+if st.session_state.chapter == 3:
+    chapter(3,
+            "Methods",
+            "Giving your objects behaviour")
+    
+    st.markdown("Methods are just functions defined inside a class. They give your objects things they can do.")
+
+    code4 = """
+    class Dog:
+        def __init__(self, name, breed):
+            self.name  = name
+            self.breed = breed
+            self.tricks = []
+
+        def bark(self):
+            print(f"{self.name} says: Woof!")
+
+        def learn_trick(self, trick):
+            self.tricks.append(trick)
+            print(f"{self.name} learned {trick}!")
+
+        def show_tricks(self):
+            if self.tricks:
+                print(f"{self.name} can: {', '.join(self.tricks)}")
+            else:
+                print(f"{self.name} knows no tricks yet.")
+
+    buddy = Dog("Buddy", "Labrador")
+    buddy.bark()                 # Buddy says: Woof!
+    buddy.learn_trick("sit")    # Buddy learned sit!
+    buddy.learn_trick("roll over")
+    buddy.show_tricks()          # Buddy can: sit, roll over"""
+
+    st.code(code4, language="python")
+
+    st.markdown("""<div class="section-title">Instance vs Class attributes</div>""", unsafe_allow_html=True)
+
+    code5 = """
+    class Dog:
+        species = "Canis lupus familiaris"  # class attribute — shared by ALL dogs
+
+        def __init__(self, name):
+            self.name = name  # instance attribute — unique to each dog
+
+    buddy = Dog("Buddy")
+    rex   = Dog("Rex")
+
+    print(buddy.species)   # Canis lupus familiaris
+    print(rex.species)     # Canis lupus familiaris (same)
+    print(buddy.name)      # Buddy
+    print(rex.name)        # Rex (different)"""
+
+    st.code(code5, language="python")
+
+    st.markdown("""<div class="tip-box">
+                💡  Class attributes are like facts about the type. Instance attributes are facts about a specific individual. </div>""", unsafe_allow_html=True)
+    
+    st.markdown("### 🧠 Quick Check")
+    st.markdown("**If two Dog objects share a class attribute species, what happens if you change species on one instance?**")
+
+    options = [
+        "It changes for all Dog objects globally",
+        "It creates a new instance attribute on that object only, shadowing the class attribute",
+        "It raises an error",
+        "It changes the class attribute permanently"]
+    
+    correct_answer = options[1]
+
+    for option in options:
+        if st.button(option, use_container_width=True, key=f"ch3{option}"):
+            st.session_state.selected = option
+            st.session_state.answered = True
+            if option == correct_answer:
+                st.session_state.correct = True
+            else:
+                st.session_state.correct = False
+    if st.session_state.answered:
+        if st.session_state.correct:
+            st.success("✅ Correct! Right! Setting an attribute on an instance creates a new instance-level attribute that shadows the class one — only that object is affected.")
+            if st.button("Next", key="ch3_next"):
+                st.session_state.chapter = 4
+                st.session_state.answered = False
+                st.session_state.correct = False
+                st.session_state.selected = None
+        else:
+            st.error("❌ Not quite right! Try again.")
+
+if st.session_state.chapter == 4:
+    chapter(4,
+        "Encapsulation",
+        "Keeping internals private — the first pillar")
+    
+    st.markdown("Encapsulation means hiding the internal details of an object and only exposing what's needed. It protects your data from accidental misuse.")
+    
+    st.markdown("""<div class="section-title">In Python, we use naming conventions to signal privacy:</div>""", unsafe_allow_html=True)
+    
+    st.markdown("""
+                ***name*** — public, anyone can access it\n
+                ***_name*** — "protected" by convention (a hint to developers)\n
+                ***__name*** — "private" — Python name-mangles it to make it harder to access from outside""")
+    
+    code6 = """
+    class BankAccount:
+        def __init__(self, owner, balance):
+            self.owner = owner
+            self.__balance = balance  # private!
+
+        def deposit(self, amount):
+            if amount > 0:
+                self.__balance += amount
+
+        def withdraw(self, amount):
+            if 0 < amount <= self.__balance:
+                self.__balance -= amount
+            else:
+                print("Insufficient funds!")
+
+        def get_balance(self):  # controlled access
+            return self.__balance
+
+    acc = BankAccount("Alice", 1000)
+    acc.deposit(500)
+    print(acc.get_balance())  # 1500
+
+    # acc.__balance  ← This would raise AttributeError!"""
+
+    st.code(code6, language="python")
+
+    st.markdown("""<div class="section-title">Properties — the Pythonic way</div>""", unsafe_allow_html=True)
+
+    st.markdown("Python's @property decorator lets you use *method calls that look like attribute access*. This is the clean, Pythonic approach to getters/setters.")
+
+    code7 = """
+    class Circle:
+        def __init__(self, radius):
+            self.__radius = radius
+
+        @property
+        def radius(self):
+             self.__radius
+
+        @radius.setter
+        def radius(self, value):
+            if value < 0:
+                raise ValueError("Radius can't be negative")
+            self.__radius = value
+
+    c = Circle(5)
+    print(c.radius)   # 5  — looks like attribute access!
+    c.radius = 10     # setter is called automatically"""
+
+    st.code(code6, language="python")
+
+    st.markdown("### 🧠 Quick Check")
+    st.markdown("**What is the purpose of encapsulation?**")
+
+    options = [
+        "To make code run faster",
+        "To hide internal implementation details and control access to data",
+        "To allow one class to use another class's methods",
+        "To create multiple objects from one class"]
+    
+    correct_answer = options[1]
+
+    for option in options:
+        if st.button(option, use_container_width=True, key=f"ch4{option}"):
+            st.session_state.selected = option
+            st.session_state.answered = True
+            if option == correct_answer:
+                st.session_state.correct = True
+            else:
+                st.session_state.correct = False
+    if st.session_state.answered:
+        if st.session_state.correct:
+            st.success("✅ Exactly! Encapsulation protects data and controls how it's accessed or modified.")
+            if st.button("Next", key="ch4_next"):
+                st.session_state.chapter = 5
+                st.session_state.answered = False
+                st.session_state.correct = False
+                st.session_state.selected = None
+        else:
+            st.error("❌ Not quite right! Try again.")
+
+if st.session_state.chapter == 5:
+    chapter(5, 
+        "Inheritance",
+        "Building on what already exists — the second pillar")
+    
+    st.markdown("Inheritance lets a class **reuse and extend** the attributes and methods of another class. The parent is called the ***base class*** or ***superclass***; the child is the ***subclass***.")
+
+    code8 = """
+    class Animal:  # Base class
+        def __init__(self, name, sound):
+            self.name  = name
+            self.sound = sound
+
+        def speak(self):
+            print(f"{self.name} says {self.sound}")
+
+    class Dog(Animal):  # Inherits from Animal
+        def __init__(self, name):
+            super().__init__(name, "Woof")  # call parent's __init__
+            self.tricks = []
+
+        def fetch(self):
+            print(f"{self.name} fetches the ball!")
+
+    class Cat(Animal):
+        def __init__(self, name):
+            super().__init__(name, "Meow")
+
+    buddy = Dog("Buddy")
+    whiskers = Cat("Whiskers")
+
+    buddy.speak()     # Buddy says Woof  (inherited!)
+    whiskers.speak()  # Whiskers says Meow
+    buddy.fetch()     # Buddy fetches the ball!"""
+
+    st.code(code8, language="python")
+
+    st.markdown("""<div class="tip-box">
+                💡 super() gives you access to the parent class. Use it to call the parent's __init__ or any other method you want to extend rather than replace. </div>""", unsafe_allow_html=True)
+    
+    st.markdown("""<div class="section-title">isinstance() — checking the family tree</div>""", unsafe_allow_html=True)
+
+    code9 = """
+        print(isinstance(buddy, Dog))     # True
+        print(isinstance(buddy, Animal))  # True — Dog IS-A Animal
+        print(isinstance(buddy, Cat))     # False"""
+    
+    st.code(code9, language="python")
+
+    st.markdown("### 🧠 Quick Check")
+    st.markdown("**What does super().__init__(...) do?**")
+
+    options = [
+        "Creates a new parent class",
+        "Calls the parent class's __init__ so you don't have to duplicate that setup code",
+        "Deletes the parent class",
+        "Makes the class abstract"]
+    
+    correct_answer = options[1]
+
+    for option in options:
+        if st.button(option, use_container_width=True, key=f"ch5{option}"):
+            st.session_state.selected = option
+            st.session_state.answered = True
+            if option == correct_answer:
+                st.session_state.correct = True
+            else:
+                st.session_state.correct = False
+    if st.session_state.answered:
+        if st.session_state.correct:
+            st.success("✅ Correct! super() lets you delegate to the parent, so you build on top of it rather than rewriting everything.")
+            if st.button("Next", key="ch5_next"):
+                st.session_state.chapter = 6
+                st.session_state.answered = False
+                st.session_state.correct = False
+                st.session_state.selected = None
+        else:
+            st.error("❌ Not quite right! Try again.")
+
+if st.session_state.chapter == 6:
+    chapter(6,
+        "Polymorphism",
+        "Same interface, different behaviour — the third pillar")
+    
+    st.markdown("Polymorphism means 'many forms'. In OOP, it means you can call the ***same method name*** on different objects and each responds in its own way.")
+
+    code10 = """
+    class Shape:
+        def area(self):
+            raise NotImplementedError
+
+    class Circle(Shape):
+        def __init__(self, radius):
+            self.radius = radius
+        def area(self):
+            return 3.14159 * self.radius ** 2
+
+    class Rectangle(Shape):
+        def __init__(self, w, h):
+            self.w, self.h = w, h
+        def area(self):
+            return self.w * self.h
+
+    class Triangle(Shape):
+        def __init__(self, base, height):
+            self.base, self.height = base, height
+        def area(self):
+            return 0.5 * self.base * self.height
+
+    # Polymorphism in action!
+    shapes = [Circle(5), Rectangle(4, 6), Triangle(3, 8)]
+    for shape in shapes:
+        print(f"{type(shape).__name__}: area = {shape.area():.2f}")
+    # Circle: area = 78.54
+    # Rectangle: area = 24.00
+    # Triangle: area = 12.00"""
+
+    st.code(code10, language="python")
+
+    st.markdown("The loop doesn't care **which** shape it has — it just calls .area() and each object handles it correctly. This is the power of polymorphism.")
+
+    st.markdown("""<div class="tip-box">
+                💡 This is also called "method overriding" — the child class overrides the parent's version of a method. </div>""", unsafe_allow_html=True)
+    
+    st.markdown("""<div class="section-title">Duck Typing</div>""", unsafe_allow_html=True)
+
+    st.markdown("Python doesn't require a shared parent class for polymorphism. If it walks like a duck and quacks like a duck, it's a duck. As long as an object has the right method, Python is happy.")
+
+    st.markdown("### 🧠 Quick Check")
+    st.markdown("**Which best describes polymorphism?**")
+
+    options = [
+        "When one class inherits from multiple parents",
+        "When many objects can respond to the same method name, each in their own way",
+        "When a class has many attributes",
+        "When you hide data with double underscores"]
+    
+    correct_answer = options[1]
+    
+    for option in options:
+        if st.button(option, use_container_width=True, key=f"ch6{option}"):
+            st.session_state.selected = option
+            st.session_state.answered = True
+            if option == correct_answer:
+                st.session_state.correct = True
+            else:
+                st.session_state.correct = False
+    if st.session_state.answered:
+        if st.session_state.correct:
+            st.success("✅ Spot on! Polymorphism == same interface, different implementations.")
+            if st.button("Next", key="ch6_next"):
+                st.session_state.chapter = 7
+                st.session_state.answered = False
+                st.session_state.correct = False
+                st.session_state.selected = None
+        else:
+            st.error("❌ Not quite right! Try again.")
+    
+if st.session_state.chapter == 7:
+    chapter(7,
+        "Abstraction",
+        "Hiding complexity — the fourth pillar")
+    
+    st.markdown("""Abstraction means exposing ***only what's necessary*** and hiding the implementation details. You use something without needing to know how it works inside.
+                Python provides Abstract Base Classes (ABCs) via the abc module to enforce that subclasses implement certain methods.""")
+    
+    code11 = """
+    from abc import ABC, abstractmethod
+
+    class Vehicle(ABC):  # Abstract class — can't be instantiated
+        def __init__(self, make, model):
+            self.make  = make
+            self.model = model
+
+        @abstractmethod
+        def start_engine(self):  # Subclasses MUST implement this
+            pass
+
+        def info(self):           # Concrete method — shared by all
+            print(f"{self.make} {self.model}")
+
+    class Car(Vehicle):
+        def start_engine(self):
+            print("Car engine: Vroom!")
+
+    class ElectricCar(Vehicle):
+        def start_engine(self):
+            print("Electric motor: Whirr...")
+
+    # Vehicle()  ← TypeError! Can't instantiate abstract class
+    my_car = Car("Toyota", "Corolla")
+    my_car.info()          # Toyota Corolla
+    my_car.start_engine()  # Car engine: Vroom!"""
+
+    st.code(code11, language="python")
+
+    st.markdown("""Abstraction is about designing ***interfaces***. You say "all Vehicles must have a start_engine method" without specifying how each one does it.""")
+
+    st.markdown("""<div class="tip-box">
+                ⚠️ If a subclass doesn't implement ALL abstract methods, Python will raise a TypeError when you try to create an object from it. This enforces the "contract". </div>""", unsafe_allow_html=True)
+    
+    st.markdown("### 🧠 Quick Check")
+    st.markdown("**What happens if you try to create an instance of an Abstract Base Class directly?**")
+
+    options = [
+        "It creates an empty object with no attributes",
+        "Python raises a TypeError",
+        "It works fine — abstract is just a label",
+        "It raises an ImportError"]
+    
+    correct_answer = options[1]
+
+    for option in options:
+        if st.button(option, use_container_width=True, key=f"ch7{option}"):
+            st.session_state.selected = option
+            st.session_state.answered = True
+            if option == correct_answer:
+                st.session_state.correct = True
+            else:
+                st.session_state.correct = False
+    if st.session_state.answered:
+        if st.session_state.correct:
+            st.success("✅ Correct! ABCs can't be instantiated. They're templates that force subclasses to implement certain methods.")
+            if st.button("Next", key="ch7_next"):
+                st.session_state.chapter = 8
+                st.session_state.answered = False
+                st.session_state.correct = False
+                st.session_state.selected = None
+        else:
+            st.error("❌ Not quite right! Try again.")
+
+if st.session_state.chapter == 8:
+    chapter(8,
+        "Dunder Methods",
+        "Magic methods that make your objects feel native")
+    
+    st.markdown("Dunder (double-underscore) methods let your objects work with Python's built-in syntax — +, len(), print(), comparison operators, and more.")
+
+    code12 = """
+    class Vector:
+        def __init__(self, x, y):
+            self.x, self.y = x, y
+
+        def __repr__(self):              # for developers / print()
+            return f"Vector({self.x}, {self.y})"
+
+        def __str__(self):               # for end users / str()
+            return f"({self.x}, {self.y})"
+
+        def __add__(self, other):        # v1 + v2
+            return Vector(self.x + other.x, self.y + other.y)
+
+        def __len__(self):               # len(v)
+            return int((self.x**2 + self.y**2) ** 0.5)
+
+        def __eq__(self, other):          # v1 == v2
+            return self.x == other.x and self.y == other.y
+
+    v1 = Vector(3, 4)
+    v2 = Vector(1, 2)
+
+    print(v1)          # (3, 4)          — uses __str__
+    print(v1 + v2)     # (4, 6)          — uses __add__
+    print(len(v1))      # 5               — uses __len__
+    print(v1 == v2)    # False           — uses __eq__"""
+
+    st.code(code12, language="python")
+
+    st.markdown("""<div class="section-title">Common dunder methods</div>""", unsafe_allow_html=True)
+
+    code13 = """
+    # Representation
+    __repr__   # repr(obj), used in REPL
+    __str__    # str(obj), print(obj)
+
+    # Math operators
+    __add__    # obj + other
+    __sub__    # obj - other
+    __mul__    # obj * other
+
+    # Comparisons
+    __eq__     # obj == other
+    __lt__     # obj < other
+
+    # Container protocol
+    __len__    # len(obj)
+    __getitem__ # obj[key]
+    __contains__ # x in obj
+
+    # Context managers
+    __enter__, __exit__  # with obj as x:"""
+
+    st.code(code13, language="python")
+
+    st.markdown("### 🧠 Quick Check")
+    st.markdown("**Which dunder method lets you use + between two of your objects?**")
+
+    options = [
+        "__plus__",
+        "__add__",
+        "__sum__",
+        "__combine__"]
+    
+    correct_answer = options[1]
+
+    for option in options:
+        if st.button(option, use_container_width=True, key=f"ch8{option}"):
+            st.session_state.selected = option
+            st.session_state.answered = True
+            if option == correct_answer:
+                st.session_state.correct = True
+            else:
+                st.session_state.correct = False
+    if st.session_state.answered:
+        if st.session_state.correct:
+            st.success("✅ Correct! __add__ is called when Python evaluates obj1 + obj2.")
+            if st.button("Next", key="ch8_next"):
+                st.session_state.chapter = 9
+                st.session_state.answered = False
+                st.session_state.correct = False
+                st.session_state.selected = None
+        else:
+            st.error("❌ Not quite right! Try again.")
+
+if st.session_state.chapter == 9:
+    chapter(9,
+        "Composition",
+        "Building complex objects from simpler ones",)
+    
+    st.markdown("""Inheritance says "is-a". Composition says "has-a". Instead of inheriting behaviour, you ***include other objects as attributes***. This is often more flexible.""")
+
+    st.markdown("""<div class="tip-box">
+                💡Rule of thumb: prefer composition over inheritance when the relationship isn't a clear "is-a" type.""", unsafe_allow_html=True)
+    
+    code14 = """
+    class Engine:
+        def __init__(self, horsepower):
+            self.horsepower = horsepower
+        def start(self):
+            print(f"Engine ({self.horsepower}hp) started")
+
+    class GPS:
+        def navigate(self, destination):
+            print(f"Navigating to {destination}")
+
+    class Car:
+        def __init__(self, make):
+            self.make   = make
+            self.engine = Engine(300)  # Car HAS-A Engine
+            self.gps    = GPS()         # Car HAS-A GPS
+
+        def drive(self, destination):
+            self.engine.start()
+            self.gps.navigate(destination)
+
+    my_car = Car("BMW")
+    my_car.drive("Berlin")
+    # Engine (300hp) started
+    # Navigating to Berlin"""
+
+    st.code(code14, language="python")
+
+    st.markdown("Now Engine and GPS can be reused in other classes (Boat, Plane...) without duplicating code, and without forcing an awkward inheritance hierarchy.")
+
+    st.markdown("""<div class="section-title">Inheritance vs Composition</div>""", unsafe_allow_html=True)
+
+    code15 = """
+    # Use Inheritance when:  "A Dog IS-A Animal"
+    class Dog(Animal): ...
+
+    # Use Composition when: "A Car HAS-A Engine"
+    class Car:
+        engine = Engine()"""
+    
+    st.code(code15, language="python")
+
+    st.markdown("### 🧠 Quick Check")
+    st.markdown("**When should you prefer composition over inheritance?**")
+
+    options = [
+        "Always — inheritance is never useful",
+        "When the relationship is 'has-a' rather than 'is-a'",
+        "When you need to override methods",
+        "When using abstract classes"]
+    
+    correct_answer = options[1]
+
+    for option in options:
+        if st.button(option, use_container_width=True, key=f"ch9{option}"):
+            st.session_state.selected = option
+            st.session_state.answered = True
+            if option == correct_answer:
+                st.session_state.correct = True
+            else:
+                st.session_state.correct = False
+    if st.session_state.answered:
+        if st.session_state.correct:
+            st.success("✅ Right! 'has-a' relationships are best modelled with composition. It's also easier to swap out components later.")
+            if st.button("Next", key="ch9_next"):
+                st.session_state.chapter = 10
+                st.session_state.answered = False
+                st.session_state.correct = False
+                st.session_state.selected = None
+        else:
+            st.error("❌ Not quite right! Try again.")
+
+if st.session_state.chapter == 10:
+    chapter(10,
+        "Putting It All Together",
+        "A complete OOP project example")
+    
+    st.markdown("Let's build a small RPG system that uses every concept we've learned.")
+
+    code16 = """
+    from abc import ABC, abstractmethod
+    import random
+
+    # Abstraction — defines the contract
+    class Character(ABC):
+        def __init__(self, name, hp):
+            self.name  = name
+            self.__hp  = hp     # Encapsulation
+            self.max_hp = hp
+
+        @property
+        def hp(self): return self.__hp
+
+        def take_damage(self, dmg):
+            self.__hp = max(0, self.__hp - dmg)
+            print(f"  {self.name} takes {dmg} dmg → {self.__hp}/{self.max_hp} HP")
+
+        @abstractmethod
+        def attack(self, target): pass
+
+        def is_alive(self): return self.__hp > 0
+
+        def __repr__(self):  # Dunder method
+            return f"{self.name} ({self.hp}/{self.max_hp} HP)"
+
+    # Composition — Warrior has a Weapon
+    class Weapon:
+        def __init__(self, name, dmg):
+            self.name, self.dmg = name, dmg
+
+    # Inheritance — Warrior IS-A Character
+    class Warrior(Character):
+        def __init__(self, name):
+            super().__init__(name, hp=100)
+            self.weapon = Weapon("Sword", 25)
+
+        def attack(self, target):  # Polymorphism
+            dmg = random.randint(15, self.weapon.dmg)
+            print(f"{self.name} swings {self.weapon.name}!")
+            target.take_damage(dmg)
+
+    class Mage(Character):
+        def __init__(self, name):
+            super().__init__(name, hp=70)
+            self.mana = 100
+
+        def attack(self, target):  # Polymorphism
+            dmg = random.randint(20, 40)
+            print(f"{self.name} casts Fireball!")
+            target.take_damage(dmg)
+
+    # Battle!
+    hero    = Warrior("Arthur")
+    villain = Mage("Morgana")
+    print(hero, "vs", villain)
+
+    while hero.is_alive() and villain.is_alive():
+        hero.attack(villain)
+        if villain.is_alive():
+            villain.attack(hero)"""
+    
+    st.code(code16, language="python")
+
+    st.markdown("""<div class="tip-box">
+                🎉 You've reached the end! Try extending this: add a Healer class, a Shield item, or an experience/level system. That's where real learning happens. 🎉""", unsafe_allow_html=True)
+    
+    st.markdown("""<div class="section-title">What you've learned</div>""", unsafe_allow_html=True)
+
+    st.markdown("""
+                ***Classes & Objects*** — blueprints and instances\n
+                ***__init__ & self*** — setting up state\n
+                ***Methods*** — behaviour on objects\n
+                ***Encapsulation*** — private attributes, properties\n
+                ***Inheritance*** — reusing and extending with super()\n
+                ***Polymorphism*** — same interface, different behaviour\n
+                ***Abstraction*** — ABCs and enforced contracts\n
+                ***Dunder methods*** — making objects feel native\n
+                ***Composition*** — has-a vs is-a""")
+    
+    st.markdown("### 🧠 Quick Check")
+    st.markdown("**In the RPG example, the Warrior 'has-a' Weapon and 'is-a' Character. Which pattern is each?**")
+
+    options = [
+        "Both are inheritance",
+        "Weapon = inheritance, Character = composition",
+        "Weapon = composition, Character = inheritance",
+        "Both are composition"]
+    
+    correct_answer = options[2]
+
+    for option in options:
+        if st.button(option, use_container_width=True, key=f"ch10{option}"):
+            st.session_state.selected = option
+            st.session_state.answered = True
+            if option == correct_answer:
+                st.session_state.correct = True
+            else:
+                st.session_state.correct = False
+    if st.session_state.answered:
+        if st.session_state.correct:
+            st.success("✅ Exactly! Warrior IS-A Character (inheritance) and Warrior HAS-A Weapon (composition). You combined both patterns.")
+            if st.button("Next", key="ch10_next"):
+                st.session_state.chapter = 11
+                st.session_state.answered = False
+                st.session_state.correct = False
+                st.session_state.selected = None
+        else:
+            st.error("❌ Not quite right! Try again.")
+
+if st.session_state.chapter == 11:
+    chapter(
+        11,
+        "Congratulations!",
+        "You have finished this Python OOP mini interactive course. Now it is your turn.")
+    
+    st.markdown("Try to make something *yours* using everything that you have learned so far.")
+
+    st.markdown("""<div class="tip-box">
+                🎉I am going to show you a game i made so you can play but try to do something similar or different to show off your skills.""", unsafe_allow_html=True)
+    
+    st.markdown("""<div class="section-title">Python mini game</div>""", unsafe_allow_html=True)
+
+    code17 = """
+    import pygame
+    import random
+    import sys
+
+    pygame.init()
+
+    WIDTH, HEIGHT = 600, 600
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("Dodge the Enemies")
+
+    clock = pygame.time.Clock()
+
+    class Player:
+        def __init__(self):
+            self.rect = pygame.Rect(300, 500, 50, 50)
+            self.speed = 6
+            self.color = (0, 255, 0)
+
+        def move(self):
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_LEFT] and self.rect.x > 0:
+                self.rect.x -= self.speed
+            if keys[pygame.K_RIGHT] and self.rect.x < WIDTH - 50:
+                self.rect.x += self.speed
+
+        def draw(self):
+            pygame.draw.rect(screen, self.color, self.rect)
+
+    # ---------------- ENEMY ----------------
+    class Enemy:
+        def __init__(self):
+            x = random.randint(0, WIDTH - 40)
+            self.rect = pygame.Rect(x, 0, 40, 40)
+            self.speed = random.randint(3, 7)
+            self.color = (255, 0, 0)
+
+        def move(self):
+            .rect.y += self.speed
+
+        def draw(self):
+            pygame.draw.rect(screen, self.color, self.rect)
+
+    # ---------------- GAME ----------------
+    class Game:
+        def __init__(self):
+            self.player = Player()
+            self.enemies = []
+            self.spawn_timer = 0
+            self.running = True
+
+        def spawn_enemy(self):
+            self.enemies.append(Enemy())
+
+        def check_collision(self):
+            for enemy in self.enemies:
+                if self.player.rect.colliderect(enemy.rect):
+                    ("GAME OVER")
+                    self.running = False
+
+        def update(self):
+            self.player.move()
+
+            if enemy in self.enemies:
+                .move()
+
+            .check_collision()
+
+            # Spawn enemies over time
+            self.spawn_timer += 1
+            if self.spawn_timer > 30:
+                self.spawn_enemy()
+                .spawn_timer = 0
+
+        def draw(self):
+            screen.fill((0, 0, 0))
+            self.player.draw()
+
+            for enemy in self.enemies:
+                enemy.draw()
+
+            pygame.display.update()
+
+        def run(self):
+            while self.running:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+
+                self.update()
+                self.draw()
+                clock.tick(60)
+    # Start game
+    game = Game()
+    game.run()"""
+    
+    st.code(code17, language="python")
+
+    st.markdown("""<div class="section-title">Don't stop learning and enjoy.</div>""", unsafe_allow_html=True)
