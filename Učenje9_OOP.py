@@ -1047,7 +1047,7 @@ if st.session_state.chapter == 13:
     """
     st.code(code18, language="python")
 
-    st.markdown("""<div class="section-title">🧠 Did you menage to finish it? Do you want next?.</div>""", unsafe_allow_html=True)
+    st.markdown("""<div class="section-title">🧠 Did you menage to finish it? Do you want next?</div>""", unsafe_allow_html=True)
 
     if st.button("Yes", key="ch14_next"):
         st.session_state.chapter = 14
@@ -1105,7 +1105,7 @@ if st.session_state.chapter == 15:
     """
     st.code(code19, language="python")
 
-    st.markdown("""<div class="section-title">🧠 Did you menage to finish it? Do you want next?.</div>""", unsafe_allow_html=True)
+    st.markdown("""<div class="section-title">🧠 Did you menage to finish it? Do you want next?</div>""", unsafe_allow_html=True)
 
     if st.button("Yes", key="ch16_next"):
         st.session_state.chapter = 16
@@ -1174,7 +1174,7 @@ if st.session_state.chapter == 17:
     """
     st.code(code20, language="python")
 
-    st.markdown("""<div class="section-title">🧠 Did you menage to finish it? Do you want next?.</div>""", unsafe_allow_html=True)
+    st.markdown("""<div class="section-title">🧠 Did you menage to finish it? Do you want next?</div>""", unsafe_allow_html=True)
 
     if st.button("Yes", key="ch18_next"):
         st.session_state.chapter = 18
@@ -1300,7 +1300,7 @@ if st.session_state.chapter == 21:
     """
     st.code(code23, language="python")
 
-    st.markdown("""<div class="section-title">🧠 Did you menage to finish it? Do you want next?.</div>""", unsafe_allow_html=True)
+    st.markdown("""<div class="section-title">🧠 Did you menage to finish it? Do you want next?</div>""", unsafe_allow_html=True)
 
     if st.button("Yes", key="ch22_next"):
         st.session_state.chapter = 22
@@ -1341,7 +1341,7 @@ if st.session_state.chapter == 23:
     
     st.code(code24, language="python")
 
-    st.markdown("""<div class="section-title">🧠 Did you menage to finish it? Do you want next?.</div>""", unsafe_allow_html=True)
+    st.markdown("""<div class="section-title">🧠 Did you menage to finish it? Do you want next?</div>""", unsafe_allow_html=True)
 
     if st.button("Yes", key="ch24_next"):
         st.session_state.chapter = 24
@@ -1473,7 +1473,7 @@ if st.session_state.chapter == 25:
     
     st.code(code25, language="python")
 
-    st.markdown("""<div class="section-title">🧠 Did you menage to finish it? Do you want next?.</div>""", unsafe_allow_html=True)
+    st.markdown("""<div class="section-title">🧠 Did you menage to finish it? Do you want next?</div>""", unsafe_allow_html=True)
 
     if st.button("Yes", key="ch26_next"):
         st.session_state.chapter = 26
@@ -1563,7 +1563,7 @@ if st.session_state.chapter == 27:
     
     st.code(code26, language="python")
 
-    st.markdown("""<div class="section-title">🧠 Did you menage to finish it? Do you want next?.</div>""", unsafe_allow_html=True)
+    st.markdown("""<div class="section-title">🧠 Did you menage to finish it? Do you want next?</div>""", unsafe_allow_html=True)
 
     if st.button("Yes", key="ch28_next"):
         st.session_state.chapter = 28
@@ -1613,7 +1613,7 @@ if st.session_state.chapter == 29:
     
     st.code(code28, language="python")
 
-    st.markdown("""<div class="section-title">🧠 Did you menage to finish it? Do you want next?.</div>""", unsafe_allow_html=True)
+    st.markdown("""<div class="section-title">🧠 Did you menage to finish it? Do you want next?</div>""", unsafe_allow_html=True)
 
     if st.button("Yes", key="ch3_next"):
         st.session_state.chapter = 30
